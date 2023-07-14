@@ -56,7 +56,7 @@ public class CarregarDadosExternos {
                 String Bandeira = dados[14].trim();
 
                 PrecoCombustivel precoCombustivel = new PrecoCombustivel(
-                        Long.valueOf(countLinha),
+                        (long) countLinha,
                         regiaoSigla,
                         estadoSigla,
                         municipio,

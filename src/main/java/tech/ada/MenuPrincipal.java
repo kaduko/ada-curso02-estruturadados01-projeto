@@ -2,13 +2,10 @@ package tech.ada;
 
 import tech.ada.util.FormatacaoUtil;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
 public class MenuPrincipal {
-    private int ultimoIdFuncionario = 0;
     private List<PrecoCombustivel> listaDePrecoCombustiveis = new LinkedList<>();
 
     private final EntradaDeDados leitor;
