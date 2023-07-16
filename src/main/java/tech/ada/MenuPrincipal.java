@@ -1,5 +1,6 @@
 package tech.ada;
 
+import tech.ada.sort.QuickSort;
 import tech.ada.util.FormatacaoUtil;
 
 import java.util.ArrayList;
@@ -21,9 +22,12 @@ public class MenuPrincipal {
     private final String OPCAO_LISTAR_PRECO_COMBUSTIVEL = "2";
     private final String OPCAO_ORDENACAO = "3";
     private final String OPCAO_VOLTAR = "v";
-    private final String OPCAO_ORDENACAO_POR_NOME = "1";
-    private final String OPCAO_LISTA_REVENDA_ORDENADA = "2";
+    private final String OPCAO_ELIMINA_DUPLICIDADES = "1";
+    private final String OPCAO_ORDENACAO_POR_NOME_BUBLESORT = "2";
+    private final String OPCAO_ORDENACAO_POR_NOME_QUICKSORT = "3";
+    private final String OPCAO_LISTA_REVENDA_ORDENADA = "4";
     private String subMenu = "";
+    private boolean duplicidadeEliminadas = false;
 
 
 
@@ -77,14 +81,30 @@ public class MenuPrincipal {
             case OPCAO_VOLTAR:
                 subMenu = "";
                 break;
-            case OPCAO_ORDENACAO_POR_NOME:
+            case OPCAO_ELIMINA_DUPLICIDADES:
                 System.out.println("==== Ordenação por Nome da Revenda ====");
                 System.out.println("... Eliminando Revendas Duplicadas ...");
                 eliminaRevendasDuplicadas();
                 System.out.println("... Eliminação Feita");
-                System.out.println("=== Ordenando Revendas por BubleSort ===");
-                ordenaRevendasPorBubleSort();
-                System.out.println("=== Ordenação Feita");
+                duplicidadeEliminadas = true;
+                break;
+            case OPCAO_ORDENACAO_POR_NOME_BUBLESORT:
+                if (duplicidadeEliminadas) {
+                    System.out.println("=== Ordenando Revendas por BubleSort ===");
+                    ordenaRevendasPorBubleSort();
+                    System.out.println("=== Ordenação Feita");
+                } else {
+                    System.out.println("=== Por favor, elimine as dulicidades antes.");
+                }
+                break;
+            case OPCAO_ORDENACAO_POR_NOME_QUICKSORT:
+                if (duplicidadeEliminadas) {
+                    System.out.println("=== Ordenando Revendas por QuickSort ===");
+                    ordenaRevendasPorQuickSort();
+                    System.out.println("=== Ordenação Feita");
+                } else {
+                    System.out.println("=== Por favor, elimine as dulicidades antes.");
+                }
                 break;
             case OPCAO_LISTA_REVENDA_ORDENADA:
                 listarRevendasOrdenadas();
@@ -100,7 +120,7 @@ public class MenuPrincipal {
         long fim;
         long qtdeIteracoes = 0;
 
-        arrayRevendasListaOrdenada = arrayRevendas;
+        arrayRevendasListaOrdenada = new ArrayList<>(arrayRevendas);
 
         //BUBBLE SORT O(N^2)
         Revenda auxRevenda;
@@ -120,6 +140,18 @@ public class MenuPrincipal {
         System.out.println(".. Algoritmo Bublesort ..");
         System.out.println(".. Tempo em ms: " + (fim-inicio) + " ..");
         System.out.println(".. Quantidade Iterações: " + qtdeIteracoes);
+    }
+
+    private void ordenaRevendasPorQuickSort(){
+        QuickSort quickSort = new QuickSort();
+
+        long inicio = System.currentTimeMillis();
+        arrayRevendasListaOrdenada = quickSort.quicksort(arrayRevendas, 0, arrayRevendas.size()-1);
+        long fim = System.currentTimeMillis();
+        System.out.println(".. Algoritmo Quicksort ..");
+        System.out.println(".. Tempo em ms: " + (fim-inicio) + " ..");
+        System.out.println(".. Quantidade Iterações: " + quickSort.getQtdeIteracoes());
+
     }
 
     private void eliminaRevendasDuplicadas() {
@@ -240,8 +272,10 @@ public class MenuPrincipal {
 
     private void carregaSubMenuOrdenacao() {
         System.out.println("********  DIGITE A OPÇÃO DESEJADA - SUBMENU ORDENAÇÃO   ******");
-        System.out.println("1 - ORDERNAR POR NOME (Revenda)");
-        System.out.println("2 - LISTAR REVENDAS ORDENADAS");
+        System.out.println("1 - ELIMINAR DUPLICIDADES: Revenda");
+        System.out.println("2 - ORDERNAR POR NOME (Revenda) - BUBBLESORT");
+        System.out.println("3 - ORDERNAR POR NOME (Revenda) - QUICKSORT");
+        System.out.println("4 - LISTAR REVENDAS ORDENADAS");
 //        System.out.println("3 - LISTAR REVENDAS SEM DUPLICIDADE");
         System.out.println("V - VOLTAR MENU PRINCIPAL");
         System.out.println("X - SAIR");
